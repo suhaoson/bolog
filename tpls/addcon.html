@@ -1,0 +1,47 @@
+<div class="pannel panel-parmary">
+	<div class="panel-heading">
+		<h2 class="panel-title">新增内容</h2>
+	</div>
+	<div class="panel-body">
+		<div class="megbox">
+			<div id="successbox" ng-show='meg_success'>
+				{{meg_success}}
+			</div>
+			<div id="errorbox" ng-show="meg_error">
+				{{meg_error}}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<form class="form-horizontal" name="form" ng-submit="postForm()">
+					<div class="form-group">
+						<label class="col-md-2">标题</label>
+						<div class="col-md-10">
+							<input type="text" name="title" class="form-control" ng-model="formData.title" ng-click="errorBye()">
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2">内容</label>
+						<div class="col-md-10">
+							<textarea name="content" class="form-control" ng-model="formData.content" ng-click="errorBye()"></textarea>
+						</div>
+					</div>
+					<div class="form-group">
+						<label class="col-md-2">类别</label>
+						<div class="col-md-3">
+							<select name="typeid" class="form-control" ng-model="formData.typeid" ng-options="m.typename for m in lists" ng-click="errorBye()">
+								<option value="">--选择分类--</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="md-offset-2 col-md-10">
+							<input type="submit" value="保存" class="btn btn-success" ng-disabled="!form.$dirty" ng-click="errorShow()">
+							<a ui-sref="list({type:0})" class="btn btn-primary">返回</a>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

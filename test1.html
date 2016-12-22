@@ -1,0 +1,22 @@
+<html>
+<head>
+	<meta charset="utf-8">
+	<title> 测试返回的结果 </title>
+</head>
+<body>
+	<div id="result"></div>
+</body>
+<script type="text/javascript" src="js/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+	$(function(){
+		// 要所有的文章
+		$.ajax({
+			method:"get",
+			url:'get.php?action=get_list',
+			data:''
+		}).success(function(data){
+			$('#result').html(data[0])
+		})
+	})
+</script>
+</html>
