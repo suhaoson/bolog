@@ -54,6 +54,30 @@ pageList.controller('arcListCtrl',function($scope,$location,$http){
 	}else{
 		var get_total_url = 'get.php?action=get_total&where=typeid='+$scope.typeid  //获取某一个分类的文档
 	}
+
+	$scope.del = function(index,id){
+		console.log(index+','+id)
+		$http({
+			method:'GET',
+			url:'get.php?action=delete_article&id='+id
+		}).success(function(data){
+			console.log(data)
+			if(data.code == 101){
+				console.log(11111)
+				$http({
+					method:'GET',
+					url:'get.php?action=get_article_title'
+				}).success(function(data){
+					console.log(data)
+					$scope.lists = data
+				})
+
+			}
+		})
+
+
+	}
+
 	//获取所对应的所有文章数目
 	$http({
 		method:'GET',
@@ -107,6 +131,8 @@ pageList.controller('arcListCtrl',function($scope,$location,$http){
 
 		}
 	}
+
+
 })
 var addCont = angular.module('addCont',[])
 .controller('addConCtrl',['$scope','$http',function($scope,$http){
@@ -159,3 +185,88 @@ var addCont = angular.module('addCont',[])
         })
     }
 }])
+
+var modifyCont = angular.module('modifyCont',[])
+.controller('modifyConCtrl',['$scope','$http','$stateParams',
+	function($scope,$http,$stateParams){
+		// 1.获取类别
+		$http({
+        	method:"GET",
+        	url:'get.php?action=get_arctype&where=reid=0'
+    	}).success(function(data){
+        	$scope.types = data;
+    	})
+		
+		// 2.读一条数据
+		console.log($stateParams.id)// 当前路有中的参数id
+		$http({
+			method:'GET',
+			url:"get.php?action=get_article&id="+$stateParams.id
+		}).success(function(data){
+			console.log(data)
+			$scope.lists = data;
+		}).error(function(err){
+			console.log(err)
+		})
+		// 3.更新数据
+		$scope.formData = {}
+		$scope.postForm = function(){
+			$scope.formData.action = 'update_article';
+			$scope.formData.id = $stateParams.id
+			$scope.formData.title = form.title.value
+			$scope.formData.content = form.content.value
+			$scope.formData.typeid = form.typeid.value
+			console.log(form.typeid.value)
+			$scope.formData.typeid = $('#typeid option:selected').val();
+			console.log($scope.formData)
+			$http({
+				method:'POST',
+				url:'get.php',
+				data:$.param($scope.formData),
+				headers:{'Content-Type':'application/x-www-form-urlencoded'}
+			}).success(function(data){
+				console.log(data)
+				if(data.code = 101){
+					$scope.meg_success = '修改成功'
+					$scope.meg_error = ''
+					setTimeout(function(){location.href="#/list/0"},1000)
+				}
+				else{
+					var meg_error = ''
+					var meg_success = ''
+					$scope.errorBye = function(){
+						$('#errorbox').fadeIn()
+					}
+					$scope.errorBye = function(){
+						$('#errorbox').fadeOut()
+					}
+					if(data.errors){
+						if(data.errors.hasOwnProperty(title)){
+							get_error = data.errors.title
+						}
+						if(data.errors.hasOwnProperty(content)){
+							get_error = data.errors.content
+						}
+						$scope.meg_error = get_error
+					}else{
+						$scope.meg_error = '无任何修改'
+					}
+				}
+
+			}).error(function(err){
+				console.log(err)
+			})
+		}
+}])
+
+var showCont = angular.module('showCont',[])
+.controller('showContCtrl',function($scope,$http,$stateParams){
+	$http({
+		method:'GET',
+		url:"get.php?action=get_arctype&id="+$stateParams.id
+	}).success(function(data){
+		$scope.lists = data;
+	}).error(function(err){
+		console.log(err)
+	})
+})

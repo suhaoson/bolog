@@ -162,5 +162,22 @@ if ($action == 'login') {
     echo json_encode(array('success' => false , 'message' => '用户名密码错误'));
     return;
 }
+
+if ($action == 'get_article_title') {
+    $sql = "SELECT * FROM `leo_article` ";
+    $data = $db->query($sql)->fetchall();
+    // $data = $db->fetch('article', '*', array('id' => $id));
+    if ($data) {
+        echo json_encode($data);
+        return;
+    }
+    echo json_encode(array('code' => 105));
+    return;
+}
+
+
 echo json_encode(array('status' => 'error'));
 return;
+
+
+

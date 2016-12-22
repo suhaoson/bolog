@@ -1,5 +1,5 @@
 // 1.创建RouterApp 模块，引入ui.router路由模块
-var routerApp = angular.module('routerApp',['ui.router','loginApp','pageList','xg.page','addCont'])
+var routerApp = angular.module('routerApp',['ui.router','loginApp','pageList','xg.page','addCont','modifyCont','showCont'])
 // 2.调用run方法，对项目进行一些初始化的操作
 .run(function($rootScope,$state,$stateParams){
 	$rootScope.state = $state;
@@ -61,10 +61,26 @@ var routerApp = angular.module('routerApp',['ui.router','loginApp','pageList','x
 			},
 			'type@modify':{
 				templateUrl:'tpls/type.html'
-
 			},
-			'modifycon@modity':{
-				templateUrl:'tpls/modifycon.html'
+			'modifycon@modify':{
+				templateUrl:'tpls/modifycon.html',
+				controller:'modifyConCtrl'
+			}
+		}
+	})
+	.state('show',{
+		url:'/show/:id',
+		views:{
+			'':{
+				templateUrl:'tpls/show.html'
+			},
+			'type@show':{
+				templateUrl:'tpls/type.html',
+				controller:'showContCtrl'
+			},
+			'showcon@show':{
+				templateUrl:'tpls/showcon.html',
+				controller:'showContCtrl'
 			}
 		}
 	})
